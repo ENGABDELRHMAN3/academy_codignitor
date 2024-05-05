@@ -486,7 +486,7 @@ ul {
 		src="<?php echo get_video_url($lesson_details['video_url'], $lesson_details['course_id']); ?>"
 		allowfullscreen></iframe>
 <?php elseif ($get_lesson_type == 'reviwe'): ?>
-	<?php $reviewQuestions =$this->crud_model->GetReviewQuestions(0);
+	<?php $reviewQuestions =$this->crud_model->GetReviewQuestions($lesson_details['id']);
 	foreach ($reviewQuestions as $key => $question) :?>
 	<div style=" margin-top: 15px"> 
 	<div class="container">

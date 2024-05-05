@@ -1712,13 +1712,7 @@ class Crud_model extends CI_Model
             $data['lesson_type'] = 'reviwe';
             $questyions =$this->input->post('text_question', false);
             $answers = $this->input->post('text_answer', false);
-            foreach($questyions as $questionKey=> $question){
-                $reviewData['question'] =  htmlspecialchars_(remove_js($question));
-                $reviewData['answer'] = htmlspecialchars_(remove_js($answers[$questionKey]));
-
-                $this->db->insert('review_questions', $reviewData);
-
-            }
+            
         }
          else {
             if ($attachment_type == 'iframe') {
@@ -1758,6 +1752,16 @@ class Crud_model extends CI_Model
 
         $this->db->insert('lesson', $data);
         $inserted_id = $this->db->insert_id();
+        if($lesson_type == 'review'){
+            $reviewData['review_id'] = $inserted_id;
+            foreach($questyions as $questionKey=> $question){
+                $reviewData['question'] =  htmlspecialchars_(remove_js($question));
+                $reviewData['answer'] = htmlspecialchars_(remove_js($answers[$questionKey]));
+                $this->db->insert('review_questions', $reviewData);
+
+            }
+
+        }
 
         if (isset($_FILES['thumbnail']['name']) && $_FILES['thumbnail']['name'] != "") {
             if (!file_exists('uploads/thumbnails/lesson_thumbnails')) {

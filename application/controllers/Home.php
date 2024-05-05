@@ -801,9 +801,10 @@ class Home extends CI_Controller
                 } else {
                     $lesson = $this->db->get_where('lesson', array('id' => $lesson_id))->row();
                     #check student view count
-                     $studentViewCount =  $this->crud_model->get_student_lesson_watch_count( $lesson_id,$lesson->section_id);
+                     $studentViewCount =  $this->crud_model->get_student_lesson_watch_count( $lesson_id,$course_id);
                      $firstLesson = $this->crud_model->get_lessons()->row();
-                    
+                    //  print_r($lesson->view_count);die;
+
                      if($studentViewCount <= $lesson->view_count-1|| $lesson_id== $firstLesson->id || $lesson->lesson_type == 'quiz' || $lesson->lesson_type == 'reviwe'){
                         $page_data['lesson_id']  = $lesson_id;
                         $page_data['section_id'] = $lesson->section_id;
