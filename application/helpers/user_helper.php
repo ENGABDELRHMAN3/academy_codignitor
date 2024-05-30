@@ -48,8 +48,27 @@ if ( ! function_exists('is_purchased'))
 		$enrolled_history = $CI->db->get_where('enrol' , ['user_id' => $user_id, 'course_id' => $course_id]);
 		if ($enrolled_history->num_rows() > 0) {
 			$expiry_date = $enrolled_history->row('expiry_date');
+
 			if($expiry_date == null || $expiry_date >= time()){
-				return true;
+				$haveUnseenData = false;
+			$coursLessons = $CI->db->get_where('lesson', ['course_id' => $course_id])->result_array();
+
+			foreach ($coursLessons as $key => $lesson) {
+				$studentViewCount = $CI->db->get_where('student_watches', ['cours_id' => $course_id, 'lesson_id' => $lesson['id'], 'student_id' => $user_id])->num_rows();
+
+				if ($studentViewCount >= $lesson['view_count']) {
+					$haveUnseenData = true;
+				}
+			}
+			// print_r($coursLessons);die;
+			
+		if (!$haveUnseenData) {
+			return true;
+		}else{
+			return false;
+
+		}
+
 			}else{
 				return false;
 			}
@@ -58,6 +77,45 @@ if ( ! function_exists('is_purchased'))
 		}
 	}
 }
+
+if ( ! function_exists('getlimite')){
+	function getlimite($course_id,$user_id = "")  {
+
+		$CI	=&	get_instance();
+		$CI->load->library('session');
+		$CI->load->database();
+		if($user_id == "" ){
+			$user_id = $CI->session->userdata('user_id');
+
+		}else{
+			$user_id = $user_id;
+		}
+
+		$haveUnseenData = false;
+	$coursLessons = $CI->db->get_where('lesson', ['course_id' => $course_id])->result_array();
+
+	foreach ($coursLessons as $key => $lesson) {
+		$studentViewCount = $CI->db->get_where('student_watches', ['cours_id' => $course_id, 'lesson_id' => $lesson['id'], 'student_id' => $user_id])->num_rows();
+
+		if ($studentViewCount < $lesson['view_count']) {
+			$haveUnseenData = true;
+		}
+	}
+	// print_r($course_id);
+	// print_r($user_id);
+	// print_r($lesson['id']);
+	// die;
+	
+if ($haveUnseenData) {
+	return true;
+}else{
+	return false;
+
+}
+	}
+	
+}
+
 if ( ! function_exists('enroll_status'))
 {
 	function enroll_status($course_id = "", $user_id = "") {

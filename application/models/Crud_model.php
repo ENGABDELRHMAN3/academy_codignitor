@@ -263,6 +263,14 @@ class Crud_model extends CI_Model
         $this->db->delete('enrol');
     }
 
+
+    public function renow_enrol($param1, $cours_id)
+    {
+        $this->db->where('student_id', $param1);
+        $this->db->where('cours_id', $cours_id);
+        $this->db->delete('student_watches');
+    }
+
     public function purchase_history($user_id = "")
     {
         if ($user_id > 0) {

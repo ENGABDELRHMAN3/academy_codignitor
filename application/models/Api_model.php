@@ -7,7 +7,7 @@ class Api_model extends CI_Model
 	// constructor
 	function __construct()
 	{
-		parent::__construct();
+				parent::__construct();
 		/*cache control*/
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0');
 		$this->output->set_header('Pragma: no-cache');
@@ -602,10 +602,13 @@ class Api_model extends CI_Model
 		$my_courses = $this->course_data($my_courses);
 		foreach ($my_courses as $key => $my_course) {
 			if (isset($my_course['id']) && $my_course['id'] > 0) {
-				$my_courses[$key]['completion'] = round(course_progress($my_course['id'], $user_id));
-				$my_courses[$key]['total_number_of_lessons'] = $this->crud_model->get_lessons('course', $my_course['id'])->num_rows();
-				$my_courses[$key]['total_number_of_completed_lessons'] = $this->get_completed_number_of_lesson($user_id, 'course', $my_course['id']);
-			}
+					$my_courses[$key]['completion'] = round(course_progress($my_course['id'], $user_id));
+					$my_courses[$key]['total_number_of_lessons'] = $this->crud_model->get_lessons('course', $my_course['id'])->num_rows();
+					$my_courses[$key]['total_number_of_completed_lessons'] = $this->get_completed_number_of_lesson($user_id, 'course', $my_course['id']);
+					if(!getlimite($my_course['id'], $user_id)){
+						unset($my_courses[$key]);
+					}
+				}
 		}
 		return $my_courses;
 	}
@@ -664,9 +667,9 @@ class Api_model extends CI_Model
 				$studentCountView = $this->crud_model->get_student_lesson_watch_count($lesson['id'], $course_id,$user_id );
 				$sections[$key]['lessons'][$lessonKey]['view_count']=$lesson['view_count'] ;
 				$sections[$key]['lessons'][$lessonKey]['studentCountView']= $studentCountView;
-				$sections[$key]['lessons'][$lessonKey]['AvailableToView'] =true;
+				$sections[$key]['lessons'][$lessonKey]['availableToView'] = 1;
 				if($lesson['lesson_type'] != "quiz"){
-					$sections[$key]['lessons'][$lessonKey]['AvailableToView'] = $lesson['view_count']-1>=$studentCountView ? true: false;
+					$sections[$key]['lessons'][$lessonKey]['availableToView'] = $lesson['view_count']-1>=$studentCountView ? 1: 2;
 
 				}
 			}

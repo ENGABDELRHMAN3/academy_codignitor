@@ -250,7 +250,7 @@ class Home extends CI_Controller
         $page_data['page_name'] = "course_page";
         $page_data['page_title'] = site_phrase('course');
 
-
+        // print_r(get_frontend_settings('theme'));die;
         $this->load->view('frontend/' . get_frontend_settings('theme') . '/index', $page_data);
     }
 
@@ -771,7 +771,7 @@ class Home extends CI_Controller
     {
         $enroll_status = enroll_status($course_id);
         $user_id = $this->session->userdata('user_id');
-       
+       $sertTypeEmpty = false;
         $course_instructor_ids = array();
         if ($this->session->userdata('user_login') != 1) {
             if ($this->session->userdata('admin_login') != 1) {
@@ -818,7 +818,9 @@ class Home extends CI_Controller
                             $lesson_id = $default_lesson['id'];
                             $page_data['lesson_id']  = 1;
                             $page_data['section_id'] = 1;
-
+                            $sertTypeEmpty = true;
+                            // print_r("sdfasda");die;
+                            // $page_data['lesson_details']['lesson_type'] = "empty"; 
                             $this->session->set_flashdata('error_message', "You\'ve exceeded the view limit");
 
                         }
@@ -852,6 +854,9 @@ class Home extends CI_Controller
         $this->db->insert('student_watches',  $viewData);
 
         $page_data['lesson_details'] = $this->crud_model->get_lessons('lesson', $lesson_id)->row_array();
+        if($sertTypeEmpty == true){
+            $page_data['lesson_details']['lesson_type'] = "empty";
+        }
         $page_data['course_details']  = $course_details;
         $page_data['drip_content_settings']  = json_decode(get_settings('drip_content_settings'), true);
         $page_data['watch_history']  = $this->crud_model->get_watch_histories($user_id, $course_id)->row_array();

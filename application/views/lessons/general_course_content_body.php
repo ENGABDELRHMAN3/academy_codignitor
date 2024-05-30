@@ -1,8 +1,8 @@
 <?php
 $full_page = isset($full_page) ? $full_page : false;
 $lesson_thumbnail_url = $this->crud_model->get_lesson_thumbnail_url($lesson_id);
-$get_lesson_type = get_lesson_type($lesson_details['id']);
-// print_r($get_lesson_type);die;
+$lesson_details['lesson_type'] != "empty" ? $get_lesson_type = get_lesson_type($lesson_details['id']) :$get_lesson_type  ="empty";
+// print_r($lesson_details);die;
 
 ?>
 <style>
@@ -459,7 +459,7 @@ ul {
 <?php elseif ($get_lesson_type == 'image_file'): ?>
 	<?php $img_size = getimagesize('uploads/lesson_files/' . $lesson_details['attachment']); ?>
 	<img width="100%" style="max-width: <?php echo $img_size[0] . 'px'; ?>" height="auto"
-		src="<?php echo site_url('files?course_id=' . $course_details['id'] . '&lesson_id=' . $lesson_details['id'] . '&type=image'); ?>" />
+		src="<?php echo site_url('file s?course_id=' . $course_details['id'] . '&lesson_id=' . $lesson_details['id'] . '&type=image'); ?>" />
 <?php elseif ($get_lesson_type == 'text_file'): ?>
 	<iframe class="embed-responsive-item" width="100%" height="450px"
 		src="<?php echo site_url('files?course_id=' . $course_details['id'] . '&lesson_id=' . $lesson_details['id'] . '&type=image'); ?>"
@@ -528,8 +528,13 @@ ul {
 	</div>	
 	<?php endforeach; ?>
 
-<?php else: ?>
+<?php elseif ($get_lesson_type == 'empty'):?>
+        <img src="<?= base_url("uploads\system\home-1-1.png");?>" alt="asssssssssss" srcset="">
+	
+  <? else: 
+    ?>
 	<div class="w-100">
+        <img src="<?= base_url("uploads\system\home-1-1.png");?>" alt="asssssssssss" srcset="">
 		<iframe class="embed-responsive-item" width="100%" height="550px" src="<?php echo $lesson_details['attachment']; ?>"
 			allowfullscreen></iframe>
 	</div>

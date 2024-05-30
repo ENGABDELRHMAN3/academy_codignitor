@@ -14,7 +14,10 @@
                     <h1><?php echo get_phrase('Courses'); ?></h1>
                     <div class="row">
                         <?php foreach($enrolments as $enrolment):
-                            $course_details = $this->crud_model->get_course_by_id($enrolment['course_id'])->row_array();
+                                                    $course_details = $this->crud_model->get_course_by_id($enrolment['course_id'])->row_array();
+
+                         if (getlimite($enrolment['course_id'])) : 
+
                             $instructor_details = $this->user_model->get_all_user($course_details['creator'])->row_array();
                             $course_duration = $this->crud_model->get_total_duration_of_lesson_by_course_id($course_details['id']);
                             $lectures = $this->db->get_where('lesson', ['course_id' => $course_details['id'], 'lesson_type !=' => 'quiz']);
@@ -105,7 +108,9 @@
                                     </div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
+                        <?php 
+                        endif;
+                    endforeach; ?>
                     </div>
                 </div>
             </div>
