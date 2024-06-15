@@ -13,6 +13,12 @@
 
 	<link name="favicon" type="image/x-icon" href="<?php echo base_url('uploads/system/'.get_frontend_settings('favicon')); ?>" rel="shortcut icon" />
 	<?php include 'includes_top.php';?>
+	<link rel="stylesheet"
+        href="https://atfawry.fawrystaging.com/atfawry/plugin/assets/payments/css/fawrypay-payments.css">
+    <!-- Import FawryPay Staging JavaScript Library-->
+    <script type="text/javascript"
+        src="https://atfawry.fawrystaging.com/atfawry/plugin/assets/payments/js/fawrypay-payments.js"></script>
+   
 </head>
 <body>
 	<?php

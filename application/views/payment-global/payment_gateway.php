@@ -207,7 +207,12 @@ $payment_gateways = $this->db->where('status', 1)->get('payment_gateways')->resu
 						</div>
 					<?php endforeach; ?>
 
-
+					<div class="row payment-gateway fawry-selector'; ?>" onclick="selectedPaymentGateway('fawry')">
+							<div class="col-12">
+								<img class="tick-icon fawry-icon" src="<?php echo base_url('assets/payment/tick.png'); ?>">
+								<img class="payment-gateway-icon" src="<?php echo base_url('assets/payment/fawry.png'); ?>">
+							</div>
+						</div>
 				</div>
 
 				<div class="col-md-1"></div>
@@ -263,7 +268,10 @@ $payment_gateways = $this->db->where('status', 1)->get('payment_gateways')->resu
 						    }
 
 							include $payment_gateway['identifier']."/payment_form.php";
-						endforeach; ?>
+						endforeach; 
+						include "fawry/payment_form.php";
+						?>
+
 					</div>
 				</div>
 			</div>
